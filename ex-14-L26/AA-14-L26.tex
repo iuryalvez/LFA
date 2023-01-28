@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+
+% ----------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Iury Alexandre Alves Bo}
+\def\matricula{202103735}
+\def\ua{14}
+\def\myling{{26}} % Informe o número da linguagem selecionada.
+
+% ------------------------------------------ Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=2.0cm,left=1.5cm,right=1.5cm]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage[breakable]{tcolorbox}
+%
+\newcommand{\ve}{\ensuremath{\varepsilon}}
+%\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%\newcommand{\derivG}[2]{\mathop{\Longrightarrow}\limits_{\scriptscriptstyle #2}^{\scriptscriptstyle #1}}
+
+\begin{document}
+% ------------------------------------------------- Cabeçalho
+ \begin{tcolorbox}[rounded corners, colback=blue!3, colframe=blue!40!black]
+  \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2022/2}\\
+  \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}
+ \end{tcolorbox}\bigskip
+%
+% ------------------------------------------------- Atividade
+\begin{tcolorbox}[rounded corners, colback=blue!2, colframe=blue!40!black, title=\textbf{Atividade AA-\ua}]
+ Nesta tarefa deve-se propor uma gramática livre de contexto $G_n^0$ que gere a linguagem $\mathcal{L}_n$ selecionada, ou seja, $\mathcal{L}(G)=\mathcal{L}_n$. Em seguida obtenha as gramáticas $G_n^i$, $i=1,\dots,5$, especificadas em cada um dos passos a seguir (eventualmente pode ser que $G_n^i = G_n^{i-1}$, para algum $i\in\{1,\dots,5\}$):
+ \begin{enumerate}
+  \item elimine recursão na variável inicial de $G_n^0$ e obtenha $G_n^1$;
+  \item elimine as $\varepsilon$-regras de $G_n^1$ e obtenha $G_n^2$;
+  \item elimine derivações simples de $G_n^2$ e obtenha $G_n^3$;
+  \item elimine recursões à esquerda de $G_n^3$ e obtenha $G_n^4$; e
+  \item elimine símbolos inúteis de $G_n^4$ e obtenha $G_n^5$.
+ \end{enumerate}
+ (Cada aluna(o) deve consultar na descrição da atividade AA--\ua, na disciplina INF0333A da plataforma Turing, qual é a linguagem associada ao seu número de matrícula. A especificação da linguagem está disponível no arquivo ``Lista de linguagens livres de contexto'' da Seção ``Coletânea de exercícios''.)
+\end{tcolorbox}\bigskip
+
+%
+% ------------------------------------ Resolução do exercício
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={\discente\ (\matricula)}]
+\begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  $\mathcal{L}_{\myling} = w \in \Sigma^* = {0,1}^* \mid 0^m1^n0^q$, $m = 1 \Longrightarrow n = q$, $m,n \in \mathbf{N}$
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\
+  $G_{\myling}=(V,\Sigma,P,S)=(\{A,B,C,S\},\{0,1\},P,S)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S & \to 0A \mid B \mid 00C, \\
+      A & \to 1A0 \mid \ve, \\
+      B & \to 1B \mid B0 \mid \ve, \\
+      C & \to 0C \mid B 
+     \end{aligned}
+    \right\}\]
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \end{itemize}
+\end{tcolorbox}\bigskip
+
+%=========================================================================
+\begin{tcolorbox}[breakable,rounded corners, colback=yellow!5, colframe=red!40!black, title={Transformações em $G_{\myling}$.}]
+%-----------------------------------------------
+\begin{enumerate}
+  \item Não há recursão na variável inicial de $G_{\myling}$.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item Eliminar $\ve$-regras de $G_{\myling}^0$ e obter $G_{\myling}^1$:\\
+  $G_{\myling}^1=(V,\Sigma,P,S)=(\{A,B,C,S\},\{0,1\},P,S)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S & \to 0A \mid B \mid 00C \mid \ve, \\
+      A & \to 1A0 \mid 10, \\
+      B & \to 1B \mid B0 \mid 1 \mid 0, \\
+      C & \to 0C \mid B  
+     \end{aligned}
+    \right\}\]
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item Eliminar derivações simples de $G_{\myling}^1$ e obter $G_{\myling}^2$:\\
+  $G_{\myling}^2=(V,\Sigma,P,S)=(\{A,B,C,S\},\{0,1\},P,S)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S & \to 0A \mid B \mid 00C \mid \ve, \\
+      A & \to 1A0 \mid 10, \\
+      B & \to 1B \mid B0 \mid 1 \mid 0, \\
+      C & \to 0C \mid 1B \mid B0 \mid 1 \mid 0 
+     \end{aligned}
+    \right\}\]
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\item Não há recursões à esquerda de $G_{\myling}^2$.\\
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ \item Não há símbolos inúteis de $G_{\myling}^2$.\\
+
+\end{enumerate}
+\end{tcolorbox}
+%=========================================================================
+\end{document}
+%

@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+
+% ----------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulana(o) de tal}
+\def\matricula{20010101}
+\def\ua{15}
+\def\up{14}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% ------------------------------------------ Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=2.0cm,left=1.5cm,right=1.5cm]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage[breakable]{tcolorbox}
+%
+\newcommand{\ve}{\ensuremath{\varepsilon}}
+
+\begin{document}
+% ------------------------------------------------- Cabeçalho
+ \begin{tcolorbox}[rounded corners, colback=blue!3, colframe=blue!40!black]
+  \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2022/2}\\
+  \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}
+ \end{tcolorbox}\bigskip
+%
+% ------------------------------------------------- Atividade
+\begin{tcolorbox}[rounded corners, colback=blue!2, colframe=blue!40!black, title=\textbf{Atividade AA-\ua}]
+ Nesta tarefa deve-se converter a gramática $G_n^5$, obtida na atividade avaliativa anterior (AA-\up\ relativa a transformações em GLC's), para a forma normal de Chomsky \textbf{OU} para a forma normal de Greibach. (Cada aluno(a) deve consultar na descrição da atividade AA--\up, na disciplina INF0333A da plataforma Turing, qual é a linguagem associada ao seu número de matrícula. A descrição da linguagem está disponível no arquivo ``Lista de linguagens livres de contexto'' da Seção ``Coletânea de exercícios''.)
+\end{tcolorbox}\bigskip
+
+%
+% ------------------------------------ Resolução do exercício
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={\discente\ (\matricula)}]
+\begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  $\mathcal{L}_{\myling} = ???$
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item Gramática $G_{\myling}^5$ (obtida na AA-\up) que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\
+  $G_{\myling}^5=(V,\Sigma,P,S_0)=(\{A,B,S,S_0,R\},\{a,b\},P,S_0)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S_0 & \to SA\mid aB\mid a, \\
+      S   & \to aB\mid a\mid aBR\mid aR, \\
+      R   & \to AR\mid b\mid SA\mid aB\mid a, \\
+      A   & \to b\mid SA\mid aB\mid a, \\
+      B   & \to b
+     \end{aligned}
+    \right\}\]
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \end{itemize}
+\end{tcolorbox}\bigskip
+
+%=========================================================================
+\begin{tcolorbox}[breakable,rounded corners, colback=yellow!5, colframe=red!40!black, title={Forma normal de Chomsky.}]
+%-----------------------------------------------
+\begin{itemize}
+  \item Gramática $G_{\myling}^6$ na forma normal de Chomsky, obtida a partir de $G_{\myling}^5$, que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\
+  $G_{\myling}^6=(V,\Sigma,P,S_0)=(\{A,B,S,S_0,R,T_1,T_2\},\{a,b\},P,S_0)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S_0 & \to SA\mid T_1B\mid a, \\
+      S   & \to T_1B\mid a\mid T_1T_2\mid T_1R, \\
+      R   & \to AR\mid b\mid SA\mid T_1B\mid a, \\
+      A   & \to b\mid SA\mid T_1B\mid a, \\
+      B   & \to b,\\
+      T_1 & \to a,\\
+      T_2 & \to BR
+     \end{aligned}
+    \right\}\]
+\end{itemize}
+\end{tcolorbox}
+
+%=========================================================================
+\begin{tcolorbox}[breakable,rounded corners, colback=yellow!5, colframe=red!40!black, title={Forma normal de Greibach.}]
+%-----------------------------------------------
+\begin{itemize}
+  \item Gramática intermediária $G_{\myling}^7$, obtida de $G_{\myling}^6$, definindo-se números de ordem para as variáveis e fazendo-se as substituições apropriadas nas regras de derivação das variáveis $S_0$, $A$, $R$ e $T_2$:
+      $$
+       \begin{array}{l|ccccccccccc}
+        \textbf{Variável} & S_0 & S & A & B & R & T_1 & T_2\\
+        \hline
+        \textbf{Ordem}    &   1 & 2 & 3 & 4 & 5 & 6   & 7\\
+       \end{array}
+      $$
+  
+  \noindent
+  $G_{\myling}^7=(V,\Sigma,P,S_0)=(\{A,B,S_0,R,T_1,T_2\},\{a,b\},P,S_0)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S_0 & \to T_1BA\mid aA\mid T_1T_2A\mid T_1RA\mid T_1B\mid a, \\
+      R   & \to bR\mid T_1BAR\mid aAR\mid T_1T_2AR\mid T_1RAR\mid T_1BR\mid\\
+          & \qquad aR\mid b\mid T_1BA\mid aA\mid T_1T_2A\mid T_1RA\mid T_1B\mid a, \\
+      A   & \to b\mid T_1BA\mid aA\mid T_1T_2A\mid T_1RA\mid T_1B\mid a, \\
+      B   & \to b,\\
+      T_1 & \to a,\\
+      T_2 & \to bR
+     \end{aligned}
+    \right\}\]
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item Gramática $G_{\myling}^8$ na forma normal de Greibach, obtida de $G_{\myling}^7$, substituindo-se em $G_{\myling}^7$ a variável $T_1$ mais à esquerda nas regras de derivação e eliminando-se as variáveis $S$ e $T_1$:\\
+  $G_{\myling}^8=(V,\Sigma,P,S_0)=(\{A,B,S_0,R,T_2\},\{a,b\},P,S_0)$, com
+    \[P=\left\{
+     \begin{aligned}
+      S_0 & \to aBA\mid aA\mid aT_2A\mid aRA\mid aB\mid a, \\
+      R   & \to bR\mid aBAR\mid aAR\mid aT_2AR\mid aRAR\mid aBR\mid\\
+          & \qquad aR\mid b\mid aBA\mid aA\mid aT_2A\mid aRA\mid aB\mid a, \\
+      A   & \to b\mid aBA\mid aA\mid aT_2A\mid aRA\mid aB\mid a, \\
+      B   & \to b,\\
+      T_2 & \to bR
+     \end{aligned}
+    \right\}\]
+\end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\end{document}
+%

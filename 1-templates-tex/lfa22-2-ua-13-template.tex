@@ -1,0 +1,136 @@
+\documentclass[12pt]{article}
+
+% ----------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulana(o) de tal}
+\def\matricula{20010101}
+\def\ua{13}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% ------------------------------------------ Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=2.0cm,left=1.5cm,right=1.5cm]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage[breakable]{tcolorbox}
+%
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+%
+
+\newcommand{\ve}{\ensuremath{\varepsilon}}
+%\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%\newcommand{\derivG}[2]{\mathop{\Longrightarrow}\limits_{\scriptscriptstyle #2}^{\scriptscriptstyle #1}}
+
+\begin{document}
+% ------------------------------------------------- Cabeçalho
+ \begin{tcolorbox}[rounded corners, colback=blue!3, colframe=blue!40!black]
+  \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2022/2}\\
+  \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}
+ \end{tcolorbox}\bigskip
+%
+% ------------------------------------------------- Atividade
+\begin{tcolorbox}[rounded corners, colback=blue!2, colframe=blue!40!black, title=\textbf{Atividade AA-\ua}]
+  Nesta tarefa deve-se propor uma gramática livre de contexto $G$ que gere a linguagem $\mathcal{L}_n$ selecionada e verificar se $G$ é ambígua. ($i$) Em caso afirmativo, mostre duas derivações à esquerda em $G$ para uma mesma cadeia e proponha uma gramática equivalente $G^\prime$ que não seja ambígua. ($ii$) Caso $G$ não seja ambígua, proponha uma gramática $G^\prime$ equivalente que seja ambígua e mostre duas derivações à esquerda em $G^\prime$ para uma mesma cadeia. (Cada aluno(a) deve consultar na descrição da atividade AA--\ua, na disciplina INF0333A da plataforma Turing, qual é a linguagem associada ao seu número de matrícula. A descrição da linguagem está disponível no arquivo ``Lista de linguagens livres de contexto'' da Seção ``Coletânea de exercícios''.)
+\end{tcolorbox}\bigskip
+
+%
+% ------------------------------------ Resolução do exercício
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={\discente\ (\matricula)}]
+\begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item $\mathcal{L}_{\myling} = \{w\in\{(,)\}^*\mid\text{os símbolos `(' e `)' em $w$ estão balanceados} \}$.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\   $G_{\myling}=(V,\Sigma,P,S)=(\{S\},\{(,)\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to (S) \mid SS \mid \ve
+   \end{array}\right\}.
+  $$
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \end{itemize}
+\end{tcolorbox}\bigskip
+
+%=========================================================================
+\begin{tcolorbox}[breakable,rounded corners, colback=yellow!5, colframe=red!40!black, title={$G_{\myling}$ é ambígua.}]
+ \begin{itemize}
+  %- - - - - - - - - - - - - - - -
+  \item Derivações à esquerda distintas para a cadeia $w=(())$:
+    \begin{align*}
+   S &\Rightarrow (S) \Rightarrow (SS) \Rightarrow ((S)S) \Rightarrow ((\ve)S) \Rightarrow (()\ve) \equiv (())\shortintertext{e}
+   S &\Rightarrow (S) \Rightarrow (SS) \Rightarrow (\ve S) \Rightarrow ((S)) \Rightarrow  ((\ve)) \equiv (()).
+  \end{align*}
+  %- - - - - - - - - - - - - - - -
+  \item Árvores de derivações da cadeia $w=(())$:
+  \begin{center}
+   \begin{tikzpicture}[
+    ->,>=stealth',
+    level distance=1.1cm,
+    level 1/.style={sibling distance=1.2cm},
+    level 2/.style={sibling distance=1.8cm},
+    level 3/.style={sibling distance=0.8cm},
+    transform shape,
+    scale=.8
+   ]
+    \node (t1) {$S$}
+      child { node {(} }
+      child { node {$S$}
+        child { node {$S$}
+          child { node {(} }
+          child { node {$S$} 
+            child { node {$\ve$}}}
+          child { node {)} } }
+        child { node {$S$}
+          child { node {$\ve$}}}}
+      child { node {)} };
+%      
+    \node[xshift=6cm] (t2) {$S$}
+      child { node {(} }
+      child { node {$S$}
+        child { node {$S$}
+          child { node {$\ve$}}}
+        child { node {$S$}
+          child { node {(} }
+          child { node {$S$} 
+            child { node {$\ve$}}}
+          child { node {)} } }}
+      child { node {)} };
+   \end{tikzpicture}
+  \end{center}
+  %- - - - - - - - - - - - - - - -
+ \end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\begin{tcolorbox}[breakable,rounded corners, colback=yellow!5, colframe=red!40!black, title={$G^\prime_{\myling}$ não ambígua.}]
+ \begin{itemize}
+  %- - - - - - - - - - - - - - - -
+  \item A regra de derivação $S\to \varepsilon$ e a regra recursiva $S\to SS$ da gramática $G_{\myling}$ permitem gerar qualquer quantidade da variável $S$, as quais combinadas com a regra recursiva $S\to (S)$ permitem que diferentes derivações à esquerda sejam construídas para uma mesma cadeia!
+  %- - - - - - - - - - - - - - - -
+  \item A introdução de uma variável $A$ extra elimina uma das recursões diretas na variável $S$ e remove a ambiguidade da gramática. Assim, a gramática $G^\prime_{\myling}$, não ambígua, gera as cadeias da linguagem $\mathcal{L}_{\myling}$:  $G^\prime_{\myling}=(V,\Sigma,P,S)=(\{S,A\},\{(,)\},P,S)$, com
+    $$
+     P =
+     \left\{\begin{array}{l}
+      S \to AS \mid \varepsilon\\
+      A \to (S)
+     \end{array}\right\}.
+    $$
+  %- - - - - - - - - - - - - - - -
+  \item Note-se que o conjunto de regras de derivação pode ser simplificado, com a remoção da variável $A$, ou seja, $G^\prime_{\myling}=(V,\Sigma,P,S)=(\{S\},\{(,)\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to (S)S \mid \varepsilon
+   \end{array}\right\}.
+  $$
+  %- - - - - - - - - - - - - - - -
+ \end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\end{document}
+%
