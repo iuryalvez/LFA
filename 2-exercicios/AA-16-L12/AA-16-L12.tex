@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+
+% ----------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Iury Alexandre Alves Bo}
+\def\matricula{202103735}
+\def\ua{16}
+\def\up{15}
+\def\myling{{12}} % Informe o número da linguagem selecionada.
+
+% ------------------------------------------ Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=2.0cm,left=1.5cm,right=1.5cm]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage[breakable]{tcolorbox}
+%
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,shapes}
+\tikzset{
+ node distance=3cm,
+ initial text={$P_{\myling}$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+%
+% -------------------------------------------------- New commands
+%\newcommand{\tvs}{{\large\bf \textvisiblespace}}
+\newcommand\vs[1][.8em]{% Visible space!
+ \makebox[#1]{%
+  \kern.07em
+  \vrule height.5ex
+  \hrulefill
+  \vrule height.5ex
+  \kern.07em
+ }
+}
+\newcommand{\ve}{\ensuremath{\varepsilon}}
+
+\begin{document}
+% ------------------------------------------------- Cabeçalho
+ \begin{tcolorbox}[rounded corners, colback=blue!3, colframe=blue!40!black]
+  \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2022/2}\\
+  \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}
+ \end{tcolorbox}\bigskip
+%
+% ------------------------------------------------- Atividade
+\begin{tcolorbox}[rounded corners, colback=blue!2, colframe=blue!40!black, title=\textbf{Atividade AA-\ua}]
+ Nesta tarefa deve-se propor um PDA que reconheça (por estado final e pilha vazia) as cadeias da linguagem $\mathcal{L}_n$ selecionada. (Cada aluna(o) deve consultar na descrição da atividade AA--\ua, na disciplina INF0333A da plataforma Turing, qual é a linguagem associada ao seu número de matrícula. A descrição da linguagem está disponível no arquivo ``Lista de linguagens livres de contexto'' da Seção ``Coletânea de exercícios''.)
+\end{tcolorbox}\bigskip
+
+%
+% ------------------------------------ Resolução do exercício
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={\discente\ (\matricula)}]
+\begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item $\mathcal{L}_{\myling} = \{w \in \Sigma^* = \{0,1\}^* \mid |w|_0 = 2\cdot|w|_1\}$.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item PDA $P_{\myling}$ que reconhece as cadeias da linguagem $\mathcal{L}_{\myling}$:
+\end{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\begin{center}
+\hspace*{-1.5cm}
+\begin{tikzpicture}[
+  accept/.style={accepting,fill=green!20!white},
+  reject/.style={accepting,fill=red!20!white},
+  slopea/.style={sloped,anchor=center,above},
+  slopeb/.style={sloped,anchor=center,below},
+  transform shape,
+  scale=0.9
+ ]
+  \node[initial,state]            (s0) {$s_0$};
+  \node[state,accept,right of=s0] (s1) {$s_1$};
+  \node[state,right of=s1]        (s2) {$s_2$};
+
+  \path (s0) edge node {$\ve,\ve\to \$$}  (s1)
+        (s1) edge [loop,above] node [align=left]{$1,1\to \ve$ \\ [-3pt]
+                                     $0,0\to \ve$ \\ [-3pt] $\ve,\$\to \ve$} (s1)
+             edge [bend left=15,above] node [align=left]{$1,\ve\to 0$ \\ [-3pt] $0,\ve\to1$} (s2)
+        (s2) edge [bend left=15, below] node {$\ve,\ve\to 0$}(s1)
+             edge [loop right] node [align=left] {$1,1\to \ve$ \\ [-3pt] $0,0\to \ve$} (s2)
+        ;
+\end{tikzpicture}
+\end{center}
+%\end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\end{document}
+%

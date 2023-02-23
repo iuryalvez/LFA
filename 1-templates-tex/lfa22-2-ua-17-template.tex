@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+
+% ----------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulana(o) de tal}
+\def\matricula{20010101}
+\def\ua{17}
+\def\up{16}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% ------------------------------------------ Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=2.0cm,left=1.5cm,right=1.5cm]{geometry}
+%
+\usepackage{marvosym} % \Smiley
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage[breakable]{tcolorbox}
+%
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,shapes}
+\tikzset{
+ node distance=3cm,
+ initial text={$P_{\myling}$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+%
+% -------------------------------------------------- New commands
+%\newcommand{\tvs}{{\large\bf \textvisiblespace}}
+\newcommand\vs[1][.8em]{% Visible space!
+ \makebox[#1]{%
+  \kern.07em
+  \vrule height.5ex
+  \hrulefill
+  \vrule height.5ex
+  \kern.07em
+ }
+}
+\newcommand{\ve}{\ensuremath{\varepsilon}}
+
+\begin{document}
+% ------------------------------------------------- Cabeçalho
+ \begin{tcolorbox}[rounded corners, colback=blue!3, colframe=blue!40!black]
+  \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2022/2}\\
+  \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}
+ \end{tcolorbox}\bigskip
+%
+% ------------------------------------------------- Atividade
+\begin{tcolorbox}[rounded corners, colback=blue!2, colframe=blue!40!black, title=\textbf{Atividade AA-\ua}]
+ Nesta tarefa deve ser escolhida \textbf{uma} das seguintes opções:
+ \begin{enumerate}
+  \item Propor uma gramática livre de contexto $G_n$ que gere as cadeias da linguagem selecionada e construir, segundo um dos algoritmos apresentados nas aulas, um PDA que reconheça as cadeias da linguagem gerada pela gramática.
+  \item A partir do PDA $P_n$ obtido na atividade ``AA-16 : Autômatos com pilha'', obter uma gramática que gere a linguagem aceita pelo PDA.
+ \end{enumerate}
+ (Cada aluna(o) deve consultar na descrição da atividade AA--\up, na disciplina INF0333A da plataforma Turing, qual é a linguagem associada ao seu número de matrícula. A descrição da linguagem está disponível no arquivo ``Lista de linguagens livres de contexto'' da Seção ``Coletânea de exercícios''.)
+\end{tcolorbox}\bigskip
+
+%
+% ------------------------------------ Resolução do exercício
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={\discente\ (\matricula)}]
+\begin{itemize}%[before=\color{blue}]
+  \item $\mathcal{L}_{\myling} = \{a^nba^n \mid n \geqslant 0\}$.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_{\myling}=(V,\Sigma,P,S)=(\{S,B\},\{a,b\},P,S)$, com
+  $
+   P =
+   \left\{\begin{array}{l}
+    S \to aSa \mid B,\\
+    B \to b
+   \end{array}\right\}.
+  $
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item PDA $P_{\myling}$ que reconhece as cadeias da linguagem $\mathcal{L}_{\myling}$:
+   \begin{center}
+   \begin{tikzpicture}[
+     accept/.style={accepting,fill=green!20!white},
+     initial text={$P_\myling$},
+   %  transform shape,
+   %  scale=0.95
+    ]
+     \node[initial,state]            (s0) {$s_0$};
+     \node[state,accept,right of=s0] (s1) {$s_1$};
+   
+     \path (s0) edge [loop above] node {$a,\ve\to X$}   (s0)
+                edge              node {$b,\ve\to \ve$} (s1)
+           (s1) edge [loop above] node {$a,X\to \ve$}   (s1);
+   \end{tikzpicture}
+   \end{center}
+\end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={OPÇÂO 1(a): PDA construído a partir da gramática $G_{\myling}$}]
+\begin{itemize}
+ \item PDA $P^1_{\myling}$, construído a partir da gramática $G_{\myling}$, que reconhece as cadeias da linguagem $\mathcal{L}_{\myling}$:
+   \begin{center}
+   \begin{tikzpicture}[
+     accept/.style={accepting,fill=green!20!white},
+     slopea/.style={sloped,anchor=center,above},
+     slopeb/.style={sloped,anchor=center,below},
+     initial text={$P_\myling^1$},
+   % transform shape,
+   %  scale=0.95
+    ]
+     \node[initial,state]                  (s0) {$s_0$};
+     \node[state,right of=s0]              (s1) {$s_1$};
+     \node[state,right of=s1]              (s2) {$s_2$};
+%     \node[state,below left of=s2,xshift=20pt]   (s3) {$s_3$};
+%     \node[state,below right of=s2,xshift=-20pt] (s4) {$s_4$};
+     \node[state,below of=s2,xshift=-50pt] (s3) {$s_3$};
+     \node[state,below of=s2,xshift=50pt]  (s4) {$s_4$};
+     \node[state,accept,right of=s2]       (s5) {$s_5$};
+   
+     \path (s0) edge node {$\ve,\ve\to \$$} (s1)
+           (s1) edge node {$\ve,\ve\to S$}  (s2)
+           (s2) edge [bend right=15,slopea]
+                     node {$\ve,S\to a$}    (s3)
+                edge node {$\ve,\$\to \ve$} (s5)
+%                edge [loop above,align=center]
+%                     node {$\ve,S\to B$\\[-2pt]$\ve,B\to b$\\[-2pt]
+%                           $a,a\to \ve$\\[-2pt]$b,b\to \ve$}  (s2)
+                edge [loop above,align=center]
+                     node {$\begin{aligned}
+                             \ve,S &\to B\\[-5pt]
+                             \ve,B &\to b\\[-5pt]
+                             a,a &\to \ve\\[-5pt]
+                             b,b &\to \ve\\[-5pt]
+                            \end{aligned}$}  (s2)
+           (s3) edge [bend right=15,slopeb]
+                     node {$\ve,\ve\to S$}  (s4)
+           (s4) edge [bend right=15,slopea]
+                     node {$\ve,\ve\to a$}  (s2);
+   \end{tikzpicture}
+   \end{center}
+ \end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={OPÇÂO 1(b): PDA construído a partir da forma normal de Greibach da gramática $G_{\myling}$}]
+\begin{itemize}
+ \item Versão da gramática $G_{\myling}$ na forma normal de Greibach:\\ $G^1_{\myling}=(V,\Sigma,P,S)=(\{S_0,S,A\},\{a,b\},P,S)$, com
+    $
+     P =
+     \left\{\begin{array}{r@{\;\to\;}l}
+      S_0 & aSA \mid b,\\
+      S   & aSA \mid b,\\
+      A   & a
+     \end{array}\right\}.
+    $
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ \item PDA $P^2_{\myling}$ obtido a partir da gramática $G^1_{\myling}$:
+     \begin{center}
+     \begin{tikzpicture}[
+       accept/.style={accepting,fill=green!20!white},
+       slopea/.style={sloped,anchor=center,above},
+       slopeb/.style={sloped,anchor=center,below},
+       initial text={$P^2_\myling$},
+     %  transform shape,
+     %  scale=0.95
+      ]
+       \node[initial,state]            (s0) {$s_0$};
+       \node[state,right of=s0]        (s1) {$s_1$};
+       \node[state,right of=s1]        (s2) {$s_2$};
+       \node[state,accept,right of=s2] (s3) {$s_3$};
+     
+       \path (s0) edge node {$\ve,\ve\to \$$}       (s1)
+             (s1) edge [align=left]
+                       node {$b,\ve\to \ve$\\[-2pt]
+                             $a,\ve\to SA$}         (s2)
+             (s2) edge [loop above,align=left,pos=.7]
+                       node {$a,A\to \ve$\\[-2pt]
+                             $b,S\to \ve$\\[-2pt]
+                             $a,S\to SA$}           (s2)
+             (s2) edge node {$\ve,\$\to \ve$}       (s3);
+     \end{tikzpicture}
+     \end{center}
+ \end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\begin{tcolorbox}[rounded corners, colback=yellow!5, colframe=red!40!black, title={OPÇÂO 2: Gramática $G^2_{\myling}$ obtida a partir do PDA $P_{\myling}$}]
+ \begin{itemize}
+  \item Vide exemplo 7.28 nos \emph{slides} \ldots {\Large \Smiley}
+ \end{itemize}
+\end{tcolorbox}
+%=========================================================================
+\end{document}
+%
